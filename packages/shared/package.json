@@ -1,0 +1,14 @@
+{
+  "name": "@edugen/shared",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts"
+  ,"scripts": {
+    "lint": "tsc --noEmit --strict --target ES2022 --moduleResolution node src/index.ts",
+    "typecheck": "tsc --noEmit --strict --target ES2022 --moduleResolution node src/index.ts",
+    "test": "node --test"
+  },
+  "dependencies": { "zod": "^3.25.0" },
+  "devDependencies": { "typescript": "^5.8.0" }
+}

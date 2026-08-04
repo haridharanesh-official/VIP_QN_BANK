@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VIP Maths — Teacher Paper Generator</title>
+  <meta name="description" content="A working VIP Maths teacher question-paper-generation prototype.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-row"><div class="brand-mark">V</div><div><strong>VIP Maths</strong><span>Teacher Workspace</span></div></div>
+      <nav aria-label="Primary navigation">
+        <button class="nav-item active" data-view="dashboard"><span>⌂</span> Overview</button>
+        <button class="nav-item" data-view="generator"><span>＋</span> Paper generator</button>
+        <button class="nav-item" data-view="questions"><span>▤</span> Question bank</button>
+        <button class="nav-item" data-view="saved"><span>□</span> Saved papers</button>
+      </nav>
+      <div class="sidebar-note"><strong>Milestone 1</strong><p>Teacher paper-generation vertical slice</p><div class="progress-track"><span></span></div><small>Foundation in progress</small></div>
+      <div class="profile"><div class="avatar">HD</div><div><strong>Hari Dharanesh</strong><span>Teacher administrator</span></div></div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <button class="mobile-menu" aria-label="Open navigation">☰</button>
+        <div><p class="eyebrow">Tamil Nadu State Board · Class 10</p><h1 id="page-title">Good afternoon, Hari</h1></div>
+        <div class="top-actions"><button class="ghost" id="language-toggle">தமிழ்</button><button class="primary" id="new-paper">Create paper</button></div>
+      </header>
+
+      <section id="dashboard-view" class="view active-view">
+        <div class="hero-panel">
+          <div><h2>Build a balanced question paper in minutes.</h2><p>Select chapters, define the blueprint, and let VIP Maths assemble a validated paper with an answer key.</p><button class="primary large" id="hero-create">Start generating</button></div>
+          <div class="hero-visual" aria-hidden="true"><div class="paper-sheet"><span>MATHEMATICS</span><b>Half-Yearly Examination</b><i></i><i></i><i></i><i></i><em>25 marks</em></div><div class="validation-badge">✓ Blueprint valid</div></div>
+        </div>
+        <div class="metrics">
+          <article><span>Question bank</span><strong>20</strong><small>Original demo questions</small></article>
+          <article><span>Generated papers</span><strong id="paper-count">0</strong><small>This workspace</small></article>
+          <article><span>Reviewed content</span><strong>100%</strong><small>Prototype dataset</small></article>
+          <article><span>Curriculum coverage</span><strong>3</strong><small>Mathematics chapters</small></article>
+        </div>
+        <div class="dashboard-grid">
+          <section class="panel"><div class="panel-heading"><div><h3>Recent activity</h3><p>Your latest academic workflow events.</p></div></div><div id="activity-list" class="activity-list"><div class="empty-inline">Generate your first paper to create an activity record.</div></div></section>
+          <section class="panel readiness"><div class="panel-heading"><div><h3>MVP readiness</h3><p>Today’s implemented foundation.</p></div></div><ul><li class="done">Academic selection API</li><li class="done">Blueprint validation</li><li class="done">Rule-based generation</li><li class="done">Answer-key preview</li><li>Persistent database integration</li></ul></section>
+        </div>
+      </section>
+
+      <section id="generator-view" class="view">
+        <div class="stepper" aria-label="Paper creation progress"><button class="step active" data-step="1"><span>1</span> Curriculum</button><button class="step" data-step="2"><span>2</span> Blueprint</button><button class="step" data-step="3"><span>3</span> Review</button></div>
+
+        <div class="wizard-layout">
+          <section class="wizard-card">
+            <div class="wizard-step active" data-panel="1">
+              <div class="section-heading"><h2>Select curriculum</h2><p>Choose the academic context and chapters for this paper.</p></div>
+              <div class="form-grid">
+                <label>Board<select id="board"><option>Tamil Nadu State Board</option></select></label>
+                <label>Medium<select id="medium"><option>English</option><option>Tamil</option></select></label>
+                <label>Standard<select id="standard"><option>Class 10</option></select></label>
+                <label>Subject<select id="subject"><option>Mathematics</option></select></label>
+              </div>
+              <fieldset><legend>Chapters</legend><div class="chapter-grid">
+                <label class="chapter-card selected"><input type="checkbox" value="real-numbers" checked><span>01</span><strong>Real Numbers</strong><small>5 questions</small></label>
+                <label class="chapter-card selected"><input type="checkbox" value="polynomials" checked><span>02</span><strong>Polynomials</strong><small>7 questions</small></label>
+                <label class="chapter-card selected"><input type="checkbox" value="linear-equations" checked><span>03</span><strong>Pair of Linear Equations</strong><small>8 questions</small></label>
+              </div></fieldset>
+            </div>
+
+            <div class="wizard-step" data-panel="2">
+              <div class="section-heading"><h2>Configure blueprint</h2><p>Marks are validated continuously before generation.</p></div>
+              <div class="form-grid">
+                <label>Paper name<input id="paper-name" value="Class 10 Mathematics — Unit Test"></label>
+                <label>Institution<input id="institution" value="ADYA Innovation Academy"></label>
+                <label>Duration<select id="duration"><option value="60">60 minutes</option><option value="90" selected>90 minutes</option><option value="120">120 minutes</option></select></label>
+                <label>Total marks<input id="total-marks" value="25" readonly></label>
+              </div>
+              <div class="blueprint-table">
+                <div class="blueprint-row header"><span>Section</span><span>Type</span><span>Questions</span><span>Marks each</span><span>Total</span></div>
+                <div class="blueprint-row"><strong>Section A</strong><span>MCQ</span><input class="section-count" data-type="MCQ_SINGLE" data-marks="1" type="number" min="1" max="9" value="5"><span>1</span><b>5</b></div>
+                <div class="blueprint-row"><strong>Section B</strong><span>Short answer</span><input class="section-count" data-type="SHORT_ANSWER" data-marks="2" type="number" min="1" max="8" value="5"><span>2</span><b>10</b></div>
+                <div class="blueprint-row"><strong>Section C</strong><span>Long answer</span><input class="section-count" data-type="LONG_ANSWER" data-marks="5" type="number" min="1" max="3" value="2"><span>5</span><b>10</b></div>
+              </div>
+              <div class="distribution"><div><div class="distribution-head"><h3>Difficulty distribution</h3><span id="difficulty-total">100%</span></div><label>Easy <input id="easy" type="range" min="0" max="100" value="30"><output>30%</output></label><label>Medium <input id="medium-diff" type="range" min="0" max="100" value="50"><output>50%</output></label><label>Hard <input id="hard" type="range" min="0" max="100" value="20"><output>20%</output></label></div><div class="validation-box valid" id="blueprint-validation"><strong>Blueprint valid</strong><p>25 marks across 12 questions.</p></div></div>
+            </div>
+
+            <div class="wizard-step" data-panel="3">
+              <div class="review-toolbar"><div><h2>Generated paper</h2><p id="generation-summary">Review the questions and answer key.</p></div><div class="segmented"><button class="active" data-preview="paper">Paper</button><button data-preview="answers">Answer key</button></div></div>
+              <div id="generation-error" class="error-box hidden"></div>
+              <div id="paper-preview" class="paper-preview"></div>
+              <div class="review-actions"><button class="ghost" id="regenerate">Regenerate</button><button class="primary" id="print-paper">Print / Save PDF</button></div>
+            </div>
+
+            <div class="wizard-footer"><button class="ghost" id="back-step">Back</button><button class="primary" id="next-step">Continue</button></div>
+          </section>
+
+          <aside class="summary-card">
+            <p>Paper summary</p><h3 id="summary-name">Class 10 Mathematics</h3><dl><div><dt>Board</dt><dd>Tamil Nadu</dd></div><div><dt>Subject</dt><dd>Mathematics</dd></div><div><dt>Chapters</dt><dd id="summary-chapters">3 selected</dd></div><div><dt>Questions</dt><dd id="summary-questions">12</dd></div><div><dt>Total marks</dt><dd id="summary-marks">25</dd></div></dl><div class="summary-status"><span></span><div><strong>Ready to generate</strong><small id="summary-status-text">Candidate pool is sufficient</small></div></div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="questions-view" class="view"><div class="panel"><div class="panel-heading"><div><h2>Question bank</h2><p>Original demonstration content included in this repository.</p></div><input id="question-search" placeholder="Search questions…"></div><div id="question-list" class="question-list"></div></div></section>
+      <section id="saved-view" class="view"><div class="empty-state"><div>□</div><h2>No saved papers yet</h2><p>Generated papers will appear here after persistence is connected.</p><button class="primary" id="saved-create">Create your first paper</button></div></section>
+    </main>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

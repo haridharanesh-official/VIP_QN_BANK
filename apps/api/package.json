@@ -1,0 +1,44 @@
+{
+  "name": "@edugen/api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "node --env-file=../../.env node_modules/@nestjs/cli/bin/nest.js start --watch",
+    "build": "nest build",
+    "start": "node dist/main.js",
+    "test": "node --test --import tsx \"test/**/*.test.ts\"",
+    "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "db:generate": "prisma generate",
+    "db:migrate": "node --env-file=../../.env node_modules/prisma/build/index.js migrate deploy",
+    "db:migrate:dev": "node --env-file=../../.env node_modules/prisma/build/index.js migrate dev",
+    "db:deploy": "node --env-file=../../.env node_modules/prisma/build/index.js migrate deploy",
+    "db:seed": "node --env-file=../../.env node_modules/prisma/build/index.js db seed",
+    "db:studio": "prisma studio",
+    "db:reset": "prisma migrate reset"
+  },
+  "dependencies": {
+    "@edugen/shared": "workspace:*",
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/core": "^11.0.0",
+    "@nestjs/jwt": "^11.0.0",
+    "@nestjs/platform-express": "^11.0.0",
+    "@prisma/client": "^6.14.0",
+    "argon2": "^0.44.0",
+    "cookie-parser": "^1.4.7",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.0",
+    "@types/node": "^22.0.0",
+    "@types/cookie-parser": "^1.4.9",
+    "@types/express": "^5.0.3",
+    "prisma": "^6.14.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.8.0"
+  }
+}

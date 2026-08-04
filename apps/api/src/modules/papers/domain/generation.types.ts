@@ -1,0 +1,6 @@
+import type { BloomLevel, Difficulty, QuestionType } from "@prisma/client";
+export interface GenerationSection { readonly id: string; readonly name: string; readonly displayOrder: number; readonly questionType: QuestionType; readonly marksPerQuestion: number; readonly questionCount: number; readonly internalChoiceCount: number; readonly difficultyDistribution: unknown; readonly chapterDistribution: unknown }
+export interface Candidate { readonly id: string; readonly chapterId: string; readonly questionType: QuestionType; readonly marks: number; readonly difficulty: Difficulty; readonly bloomLevel: BloomLevel; readonly sourceType: string; readonly usageCount: number; readonly lastUsedAt: Date | null; readonly questionText: string; readonly options: unknown; readonly correctAnswer: unknown; readonly solution: string | null; readonly isBookBack: boolean; readonly isCreative: boolean; readonly isPreviousYear: boolean }
+export interface ValidationIssue { readonly code: string; readonly sectionId?: string; readonly message: string; readonly required?: number; readonly available?: number }
+export interface ValidationResult { readonly valid: boolean; readonly errors: readonly ValidationIssue[]; readonly warnings: readonly ValidationIssue[] }
+export interface Selection { readonly section: GenerationSection; readonly questions: readonly Candidate[] }

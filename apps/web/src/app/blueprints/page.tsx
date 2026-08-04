@@ -1,0 +1,10 @@
+"use client";
+import { useEffect, useState, type ReactElement } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { AppShell } from "../../components/app-shell";
+import { EmptyState, ErrorState, LoadingState } from "../../components/async-state";
+import { api } from "../../lib/api";
+interface Blueprint { readonly id: string; readonly name: string; readonly totalMarks: number; readonly durationMinutes: number; readonly sections: readonly { readonly name: string }[] }
+interface Generated { readonly id: string }
+export default function BlueprintsPage(): ReactElement { const router = useRouter(); const [items, setItems] = useState<readonly Blueprint[]>(); const [error, setError] = useState(""); const [busy, setBusy] = useState(""); useEffect(() => { void api<readonly Blueprint[]>("/blueprints").then(setItems).catch((cause: unknown) => setError(cause instanceof Error ? cause.message : "Unable to load blueprints")); }, []); async function generate(id: string): Promise<void> { setBusy(id); setError(""); try { const paper = await api<Generated>(`/blueprints/${id}/generate`, { method: "POST" }); router.push(`/papers/${paper.id}`); } catch (cause) { setError(cause instanceof Error ? cause.message : "Generation failed"); } finally { setBusy(""); } } return <AppShell><header><div><h1>Blueprints</h1><p>Reusable, validated paper structures.</p></div><Link className="button" href="/blueprints/new">New blueprint</Link></header>{error && <ErrorState message={error} />}{!items ? <LoadingState /> : !items.length ? <EmptyState message="No blueprints saved yet." /> : <div className="card-grid">{items.map((item) => <article className="panel" key={item.id}><span className="eyebrow">{item.sections.length} sections</span><h2>{item.name}</h2><p>{item.totalMarks} marks · {item.durationMinutes} minutes</p><button disabled={busy === item.id} onClick={() => void generate(item.id)}>{busy === item.id ? "Generating…" : "Generate paper"}</button></article>)}</div>}</AppShell>; }

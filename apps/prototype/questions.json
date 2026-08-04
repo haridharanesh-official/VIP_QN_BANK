@@ -1,0 +1,296 @@
+[
+  {
+    "id": "q1",
+    "chapter": "real-numbers",
+    "chapterName": "Real Numbers",
+    "type": "MCQ_SINGLE",
+    "marks": 1,
+    "difficulty": "EASY",
+    "source": "BOOK_BACK",
+    "text": "Which of the following is an irrational number?",
+    "options": [
+      "0.25",
+      "√2",
+      "3/7",
+      "1.125"
+    ],
+    "answer": "√2",
+    "solution": "√2 cannot be expressed as p/q for integers p and q with q ≠ 0."
+  },
+  {
+    "id": "q2",
+    "chapter": "real-numbers",
+    "chapterName": "Real Numbers",
+    "type": "MCQ_SINGLE",
+    "marks": 1,
+    "difficulty": "MEDIUM",
+    "source": "CREATIVE",
+    "text": "If HCF(a, b) = 6 and LCM(a, b) = 180, then a × b equals:",
+    "options": [
+      "30",
+      "186",
+      "1080",
+      "2160"
+    ],
+    "answer": "1080",
+    "solution": "For positive integers, a × b = HCF(a,b) × LCM(a,b) = 6 × 180."
+  },
+  {
+    "id": "q3",
+    "chapter": "real-numbers",
+    "chapterName": "Real Numbers",
+    "type": "SHORT_ANSWER",
+    "marks": 2,
+    "difficulty": "EASY",
+    "source": "BOOK_BACK",
+    "text": "Use Euclid's division algorithm to find the HCF of 135 and 225.",
+    "answer": "45",
+    "solution": "225 = 135×1+90; 135 = 90×1+45; 90 = 45×2+0. Therefore HCF = 45."
+  },
+  {
+    "id": "q4",
+    "chapter": "real-numbers",
+    "chapterName": "Real Numbers",
+    "type": "SHORT_ANSWER",
+    "marks": 2,
+    "difficulty": "HARD",
+    "source": "CREATIVE",
+    "text": "Prove that 3 + 2√5 is irrational.",
+    "answer": "Contradiction proof",
+    "solution": "Assume 3+2√5 is rational. Then √5 would be rational after subtracting 3 and dividing by 2, a contradiction."
+  },
+  {
+    "id": "q5",
+    "chapter": "real-numbers",
+    "chapterName": "Real Numbers",
+    "type": "LONG_ANSWER",
+    "marks": 5,
+    "difficulty": "MEDIUM",
+    "source": "PREVIOUS_YEAR",
+    "text": "Show that the square of any odd positive integer is of the form 8m + 1 for some integer m.",
+    "answer": "Let n=2k+1 and expand n².",
+    "solution": "n²=(2k+1)²=4k²+4k+1=4k(k+1)+1. One of k,k+1 is even, so k(k+1)=2m. Thus n²=8m+1."
+  },
+  {
+    "id": "q6",
+    "chapter": "polynomials",
+    "chapterName": "Polynomials",
+    "type": "MCQ_SINGLE",
+    "marks": 1,
+    "difficulty": "EASY",
+    "source": "BOOK_BACK",
+    "text": "The degree of 7x³ − 4x + 9 is:",
+    "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "answer": "3",
+    "solution": "The highest exponent of x with a non-zero coefficient is 3."
+  },
+  {
+    "id": "q7",
+    "chapter": "polynomials",
+    "chapterName": "Polynomials",
+    "type": "MCQ_SINGLE",
+    "marks": 1,
+    "difficulty": "HARD",
+    "source": "CREATIVE",
+    "text": "If one zero of x² − 5x + k is 2, then k is:",
+    "options": [
+      "3",
+      "4",
+      "6",
+      "10"
+    ],
+    "answer": "6",
+    "solution": "Substitute x=2: 4−10+k=0, so k=6."
+  },
+  {
+    "id": "q8",
+    "chapter": "polynomials",
+    "chapterName": "Polynomials",
+    "type": "SHORT_ANSWER",
+    "marks": 2,
+    "difficulty": "MEDIUM",
+    "source": "BOOK_BACK",
+    "text": "Find the zeros of x² − 7x + 12.",
+    "answer": "3 and 4",
+    "solution": "x²−7x+12=(x−3)(x−4)."
+  },
+  {
+    "id": "q9",
+    "chapter": "polynomials",
+    "chapterName": "Polynomials",
+    "type": "SHORT_ANSWER",
+    "marks": 2,
+    "difficulty": "HARD",
+    "source": "CREATIVE",
+    "text": "Form a quadratic polynomial whose zeros are 2+√3 and 2−√3.",
+    "answer": "x² − 4x + 1",
+    "solution": "Sum=4 and product=1. The monic polynomial is x²−4x+1."
+  },
+  {
+    "id": "q10",
+    "chapter": "polynomials",
+    "chapterName": "Polynomials",
+    "type": "LONG_ANSWER",
+    "marks": 5,
+    "difficulty": "MEDIUM",
+    "source": "PREVIOUS_YEAR",
+    "text": "Divide 2x³ + 3x² − 11x − 6 by x − 2 and verify the division algorithm.",
+    "answer": "Quotient 2x²+7x+3, remainder 0",
+    "solution": "Synthetic division by 2 gives coefficients 2,7,3 and remainder 0. Hence dividend=(x−2)(2x²+7x+3)."
+  },
+  {
+    "id": "q11",
+    "chapter": "linear-equations",
+    "chapterName": "Pair of Linear Equations",
+    "type": "MCQ_SINGLE",
+    "marks": 1,
+    "difficulty": "MEDIUM",
+    "source": "BOOK_BACK",
+    "text": "The pair 2x + 3y = 7 and 4x + 6y = 14 has:",
+    "options": [
+      "No solution",
+      "One solution",
+      "Infinitely many solutions",
+      "Exactly two solutions"
+    ],
+    "answer": "Infinitely many solutions",
+    "solution": "The second equation is exactly twice the first."
+  },
+  {
+    "id": "q12",
+    "chapter": "linear-equations",
+    "chapterName": "Pair of Linear Equations",
+    "type": "MCQ_SINGLE",
+    "marks": 1,
+    "difficulty": "HARD",
+    "source": "CREATIVE",
+    "text": "For what value of k do x + 2y = 3 and 2x + ky = 6 have infinitely many solutions?",
+    "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "answer": "4",
+    "solution": "The coefficient ratios must be equal: 1/2 = 2/k = 3/6, hence k=4."
+  },
+  {
+    "id": "q13",
+    "chapter": "linear-equations",
+    "chapterName": "Pair of Linear Equations",
+    "type": "SHORT_ANSWER",
+    "marks": 2,
+    "difficulty": "EASY",
+    "source": "BOOK_BACK",
+    "text": "Solve x + y = 7 and x − y = 1.",
+    "answer": "x=4, y=3",
+    "solution": "Adding gives 2x=8, so x=4 and y=3."
+  },
+  {
+    "id": "q14",
+    "chapter": "linear-equations",
+    "chapterName": "Pair of Linear Equations",
+    "type": "SHORT_ANSWER",
+    "marks": 2,
+    "difficulty": "MEDIUM",
+    "source": "PREVIOUS_YEAR",
+    "text": "Determine whether 3x + 2y = 5 and 6x + 4y = 12 are consistent.",
+    "answer": "Inconsistent",
+    "solution": "a1/a2=b1/b2=1/2, but c1/c2=5/12, so the lines are parallel and distinct."
+  },
+  {
+    "id": "q15",
+    "chapter": "linear-equations",
+    "chapterName": "Pair of Linear Equations",
+    "type": "LONG_ANSWER",
+    "marks": 5,
+    "difficulty": "HARD",
+    "source": "CREATIVE",
+    "text": "A fraction becomes 1/3 when 1 is subtracted from its numerator and 8 is added to its denominator. It becomes 1/2 when 3 is added to both numerator and denominator. Find the fraction.",
+    "answer": "7/18",
+    "solution": "Let numerator=x and denominator=y. 3(x−1)=y+8 and 2(x+3)=y+3. Solving gives x=7, y=18."
+  },
+  {
+    "id": "q16",
+    "chapter": "real-numbers",
+    "chapterName": "Real Numbers",
+    "type": "MCQ_SINGLE",
+    "marks": 1,
+    "difficulty": "MEDIUM",
+    "source": "PREVIOUS_YEAR",
+    "text": "The decimal expansion of 13/125 terminates after:",
+    "options": [
+      "1 place",
+      "2 places",
+      "3 places",
+      "Does not terminate"
+    ],
+    "answer": "3 places",
+    "solution": "13/125=0.104."
+  },
+  {
+    "id": "q17",
+    "chapter": "polynomials",
+    "chapterName": "Polynomials",
+    "type": "MCQ_SINGLE",
+    "marks": 1,
+    "difficulty": "MEDIUM",
+    "source": "PREVIOUS_YEAR",
+    "text": "If α and β are zeros of x²+5x+6, then α+β equals:",
+    "options": [
+      "−6",
+      "−5",
+      "5",
+      "6"
+    ],
+    "answer": "−5",
+    "solution": "For ax²+bx+c, sum of zeros is −b/a."
+  },
+  {
+    "id": "q18",
+    "chapter": "linear-equations",
+    "chapterName": "Pair of Linear Equations",
+    "type": "MCQ_SINGLE",
+    "marks": 1,
+    "difficulty": "EASY",
+    "source": "BOOK_BACK",
+    "text": "Two intersecting straight lines represent a pair of equations with:",
+    "options": [
+      "No solution",
+      "A unique solution",
+      "Infinitely many solutions",
+      "No variables"
+    ],
+    "answer": "A unique solution",
+    "solution": "The point of intersection satisfies both equations."
+  },
+  {
+    "id": "q19",
+    "chapter": "polynomials",
+    "chapterName": "Polynomials",
+    "type": "SHORT_ANSWER",
+    "marks": 2,
+    "difficulty": "EASY",
+    "source": "BOOK_BACK",
+    "text": "Find the remainder when x³−4x+1 is divided by x−1.",
+    "answer": "−2",
+    "solution": "By the remainder theorem, f(1)=1−4+1=−2."
+  },
+  {
+    "id": "q20",
+    "chapter": "linear-equations",
+    "chapterName": "Pair of Linear Equations",
+    "type": "LONG_ANSWER",
+    "marks": 5,
+    "difficulty": "MEDIUM",
+    "source": "BOOK_BACK",
+    "text": "Solve 2x + 3y = 13 and 3x − 2y = 0 using elimination.",
+    "answer": "x=2, y=3",
+    "solution": "Multiply the first equation by 2 and the second by 3: 4x+6y=26 and 9x−6y=0. Adding gives 13x=26, so x=2 and y=3."
+  }
+]
