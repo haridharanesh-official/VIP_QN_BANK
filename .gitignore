@@ -1,14 +1,6 @@
-# Environment credentials
-.env
-.env.local
-.env.development
-.env.production
-.env.test
-.env.*.local
-!.env.example
-
 # Dependencies
 node_modules/
+.pnpm-store/
 
 # Build output
 .next/
@@ -16,6 +8,7 @@ dist/
 build/
 coverage/
 .turbo/
+*.tsbuildinfo
 
 # Logs and temporary files
 *.log
@@ -35,6 +28,5 @@ Thumbs.db
 .cache/
 
 # Tool output
-*.tsbuildinfo
 playwright-report/
 test-results/
