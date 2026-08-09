@@ -167,17 +167,22 @@ export default function QuestionsPage(): ReactElement {
                       </Badge>
                     </td>
                     <td>
-                      {["DRAFT", "CHANGES_REQUESTED", "REJECTED", "PENDING_REVIEW"].includes(
-                        question.reviewStatus
-                      ) && (
-                        <Button
-                          variant="quiet"
-                          size="sm"
-                          onClick={() => void transition(question)}
-                        >
-                          {question.reviewStatus === "PENDING_REVIEW" ? "Approve" : "Submit"}
-                        </Button>
-                      )}
+                      <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                        <Link href={`/questions/${question.id}/edit`} className="btn btn-quiet btn-sm">
+                          Edit
+                        </Link>
+                        {["DRAFT", "CHANGES_REQUESTED", "REJECTED", "PENDING_REVIEW"].includes(
+                          question.reviewStatus
+                        ) && (
+                          <Button
+                            variant="quiet"
+                            size="sm"
+                            onClick={() => void transition(question)}
+                          >
+                            {question.reviewStatus === "PENDING_REVIEW" ? "Approve" : "Submit"}
+                          </Button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}

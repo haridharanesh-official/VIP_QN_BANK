@@ -11,6 +11,8 @@ import { Select } from "../../../components/ui/Select";
 import { Textarea } from "../../../components/ui/Textarea";
 import { Alert } from "../../../components/ui/Alert";
 import { api } from "../../../lib/api";
+import { blueprintCreateSchema } from "@edugen/shared";
+import { ZodError } from "zod";
 
 interface Item {
   readonly id: string;
@@ -157,36 +159,40 @@ export default function NewBlueprintPage(): ReactElement {
     }
 
     try {
+      const payload = {
+        name: data.get("name"),
+        description: data.get("description") || undefined,
+        ...selection,
+        totalMarks,
+        durationMinutes: Number(data.get("durationMinutes")),
+        instructions: String(data.get("instructions") || "")
+          .split("\n")
+          .map((val) => val.trim())
+          .filter(Boolean),
+        sections: sections.map((section, index) => ({
+          name: section.name,
+          displayOrder: index,
+          questionType: section.questionType,
+          marksPerQuestion: section.marksPerQuestion,
+          questionCount: section.questionCount,
+          internalChoiceCount: 0,
+          isCompulsory: true,
+          ...(selectedChapters.length
+            ? { chapterDistribution: Object.fromEntries(selectedChapters.map((id) => [id, 1])) }
+            : {}),
+          difficultyDistribution: {
+            EASY: section.easy,
+            MEDIUM: section.medium,
+            HARD: section.hard,
+          },
+        })),
+      };
+
+      const validatedPayload = blueprintCreateSchema.parse(payload);
+
       const saved = await api<Saved>("/blueprints", {
         method: "POST",
-        body: JSON.stringify({
-          name: data.get("name"),
-          description: data.get("description") || undefined,
-          ...selection,
-          totalMarks,
-          durationMinutes: Number(data.get("durationMinutes")),
-          instructions: String(data.get("instructions") || "")
-            .split("\n")
-            .map((val) => val.trim())
-            .filter(Boolean),
-          sections: sections.map((section, index) => ({
-            name: section.name,
-            displayOrder: index,
-            questionType: section.questionType,
-            marksPerQuestion: section.marksPerQuestion,
-            questionCount: section.questionCount,
-            internalChoiceCount: 0,
-            isCompulsory: true,
-            ...(selectedChapters.length
-              ? { chapterDistribution: Object.fromEntries(selectedChapters.map((id) => [id, 1])) }
-              : {}),
-            difficultyDistribution: {
-              EASY: section.easy,
-              MEDIUM: section.medium,
-              HARD: section.hard,
-            },
-          })),
-        }),
+        body: JSON.stringify(validatedPayload),
       });
 
       const validation = await api<{
@@ -201,7 +207,11 @@ export default function NewBlueprintPage(): ReactElement {
 
       router.push("/blueprints");
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Unable to save blueprint");
+      if (cause instanceof ZodError) {
+        setError("Validation failed: " + cause.errors.map(e => e.message).join(", "));
+      } else {
+        setError(cause instanceof Error ? cause.message : "Unable to save blueprint");
+      }
     } finally {
       setLoading(false);
     }
@@ -214,18 +224,10 @@ export default function NewBlueprintPage(): ReactElement {
         description="Configure curriculum boundaries, paper sections, and difficulty targets."
         actions={
           <div style={{ textAlign: "right" }}>
-            <span
-              style={{
-                fontSize: "1.75rem",
-                fontWeight: 800,
-                color: "var(--brand-primary)",
-                display: "block",
-                lineHeight: 1,
-              }}
-            >
+            <span className="blueprint-total-marks">
               {calculated}
             </span>
-            <small style={{ color: "var(--text-muted)" }}>Total calculated section marks</small>
+            <small className="blueprint-total-marks-label">Total calculated section marks</small>
           </div>
         }
       />
@@ -338,8 +340,8 @@ export default function NewBlueprintPage(): ReactElement {
           </div>
 
           {chapters.length > 0 && (
-            <div style={{ marginTop: "20px" }}>
-              <label className="form-label" style={{ marginBottom: "8px", display: "block" }}>
+            <div className="blueprint-chapter-selection">
+              <label className="form-label blueprint-chapter-label">
                 Chapter Selection
               </label>
               <div className="checks">
@@ -372,29 +374,14 @@ export default function NewBlueprintPage(): ReactElement {
             </Button>
           }
         >
-          <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+          <div className="blueprint-sections-list">
             {sections.map((section, index) => (
-              <div
-                key={index}
-                style={{
-                  padding: "16px",
-                  border: "1px solid var(--border-default)",
-                  borderRadius: "var(--radius-md)",
-                  backgroundColor: "var(--surface-subtle)",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: "12px",
-                  }}
-                >
-                  <strong style={{ fontSize: "1rem", color: "var(--brand-primary)" }}>
+              <div key={index} className="blueprint-section-card">
+                <div className="blueprint-section-header">
+                  <strong className="blueprint-section-title">
                     Section #{index + 1}: {section.name}
                   </strong>
-                  <div style={{ display: "flex", gap: "6px" }}>
+                  <div className="blueprint-section-actions">
                     <Button
                       variant="quiet"
                       size="sm"

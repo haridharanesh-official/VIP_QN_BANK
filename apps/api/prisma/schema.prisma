@@ -12,6 +12,7 @@ enum UserStatus {
   SUSPENDED
   INVITED
 }
+
 enum InstitutionType {
   SCHOOL
   TUITION_CENTRE
@@ -19,11 +20,13 @@ enum InstitutionType {
   COLLEGE
   OTHER
 }
+
 enum InstitutionStatus {
   ACTIVE
   SUSPENDED
   ARCHIVED
 }
+
 enum MemberRole {
   OWNER
   ADMIN
@@ -31,16 +34,19 @@ enum MemberRole {
   TEACHER
   CONTENT_REVIEWER
 }
+
 enum MemberStatus {
   ACTIVE
   INVITED
   SUSPENDED
 }
+
 enum OwnershipScope {
   GLOBAL
   INSTITUTION
   PRIVATE
 }
+
 enum QuestionType {
   MCQ_SINGLE
   MCQ_MULTIPLE
@@ -55,11 +61,13 @@ enum QuestionType {
   LONG_ANSWER
   ESSAY
 }
+
 enum Difficulty {
   EASY
   MEDIUM
   HARD
 }
+
 enum BloomLevel {
   REMEMBER
   UNDERSTAND
@@ -68,6 +76,7 @@ enum BloomLevel {
   EVALUATE
   CREATE
 }
+
 enum ReviewStatus {
   DRAFT
   PENDING_REVIEW
@@ -76,22 +85,26 @@ enum ReviewStatus {
   REJECTED
   ARCHIVED
 }
+
 enum ReviewDecision {
   APPROVED
   CHANGES_REQUESTED
   REJECTED
 }
+
 enum BlueprintStatus {
   DRAFT
   ACTIVE
   ARCHIVED
 }
+
 enum PaperStatus {
   DRAFT
   GENERATED
   APPROVED
   ARCHIVED
 }
+
 enum GenerationMode {
   MANUAL
   AUTOMATIC
@@ -99,416 +112,451 @@ enum GenerationMode {
   CHAPTER_WISE
   FULL_SYLLABUS
 }
+
 model User {
-  id              String   @id @default(uuid()) @db.Uuid
-  authUserId      String?  @unique @map("auth_user_id") @db.Uuid
-  email           String   @unique
-  phone           String?
-  passwordHash    String   @map("password_hash")
-  firstName       String   @map("first_name")
-  lastName        String   @map("last_name")
-  status          UserStatus @default(ACTIVE)
-  emailVerifiedAt DateTime? @map("email_verified_at")
-  phoneVerifiedAt DateTime? @map("phone_verified_at")
-  lastLoginAt     DateTime? @map("last_login_at")
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
-  deletedAt       DateTime? @map("deleted_at")
-  memberships     InstitutionMember[]
-  refreshTokens   RefreshToken[]
-  createdInstitutions Institution[] @relation("InstitutionCreator")
-  createdQuestions Question[] @relation("QuestionCreator")
-  reviewedQuestions Question[] @relation("QuestionReviewer")
-  questionVersions QuestionVersion[]
-  questionReviews QuestionReview[]
-  blueprints PaperBlueprint[]
-  papers QuestionPaper[]
-  snapshots PaperSnapshot[]
-  auditLogs AuditLog[]
+  id                  String              @id @default(uuid()) @db.Uuid
+  authUserId          String?             @unique @map("auth_user_id") @db.Uuid
+  email               String              @unique
+  phone               String?
+  passwordHash        String              @map("password_hash")
+  firstName           String              @map("first_name")
+  lastName            String              @map("last_name")
+  status              UserStatus          @default(ACTIVE)
+  emailVerifiedAt     DateTime?           @map("email_verified_at")
+  phoneVerifiedAt     DateTime?           @map("phone_verified_at")
+  lastLoginAt         DateTime?           @map("last_login_at")
+  createdAt           DateTime            @default(now()) @map("created_at")
+  updatedAt           DateTime            @updatedAt @map("updated_at")
+  deletedAt           DateTime?           @map("deleted_at")
+  memberships         InstitutionMember[]
+  refreshTokens       RefreshToken[]
+  createdInstitutions Institution[]       @relation("InstitutionCreator")
+  createdQuestions    Question[]          @relation("QuestionCreator")
+  reviewedQuestions   Question[]          @relation("QuestionReviewer")
+  questionVersions    QuestionVersion[]
+  questionReviews     QuestionReview[]
+  blueprints          PaperBlueprint[]
+  papers              QuestionPaper[]
+  snapshots           PaperSnapshot[]
+  auditLogs           AuditLog[]
+
   @@map("users")
 }
 
 model RefreshToken {
-  id        String   @id @default(uuid()) @db.Uuid
-  userId    String   @map("user_id") @db.Uuid
-  tokenHash String   @unique @map("token_hash")
-  familyId  String   @map("family_id") @db.Uuid
-  expiresAt DateTime @map("expires_at")
-  revokedAt DateTime? @map("revoked_at")
-  replacedById String? @map("replaced_by_id") @db.Uuid
-  createdAt DateTime @default(now()) @map("created_at")
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id           String    @id @default(uuid()) @db.Uuid
+  userId       String    @map("user_id") @db.Uuid
+  tokenHash    String    @unique @map("token_hash")
+  familyId     String    @map("family_id") @db.Uuid
+  expiresAt    DateTime  @map("expires_at")
+  revokedAt    DateTime? @map("revoked_at")
+  replacedById String?   @map("replaced_by_id") @db.Uuid
+  createdAt    DateTime  @default(now()) @map("created_at")
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId, familyId])
   @@map("refresh_tokens")
 }
 
 model Institution {
-  id String @id @default(uuid()) @db.Uuid
-  name String
-  slug String @unique
-  institutionType InstitutionType @map("institution_type")
-  boardAffiliation String? @map("board_affiliation")
-  address String?
-  city String?
-  state String?
-  country String @default("India")
-  postalCode String? @map("postal_code")
-  logoObjectKey String? @map("logo_object_key")
-  status InstitutionStatus @default(ACTIVE)
-  createdByUserId String @map("created_by_user_id") @db.Uuid
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
-  creator User @relation("InstitutionCreator", fields: [createdByUserId], references: [id])
-  members InstitutionMember[]
-  questions Question[]
-  blueprints PaperBlueprint[]
-  papers QuestionPaper[]
-  usages PaperQuestionUsage[]
-  auditLogs AuditLog[]
+  id               String               @id @default(uuid()) @db.Uuid
+  name             String
+  slug             String               @unique
+  institutionType  InstitutionType      @map("institution_type")
+  boardAffiliation String?              @map("board_affiliation")
+  address          String?
+  city             String?
+  state            String?
+  country          String               @default("India")
+  postalCode       String?              @map("postal_code")
+  logoObjectKey    String?              @map("logo_object_key")
+  status           InstitutionStatus    @default(ACTIVE)
+  createdByUserId  String               @map("created_by_user_id") @db.Uuid
+  createdAt        DateTime             @default(now()) @map("created_at")
+  updatedAt        DateTime             @updatedAt @map("updated_at")
+  deletedAt        DateTime?            @map("deleted_at")
+  creator          User                 @relation("InstitutionCreator", fields: [createdByUserId], references: [id])
+  members          InstitutionMember[]
+  questions        Question[]
+  blueprints       PaperBlueprint[]
+  papers           QuestionPaper[]
+  usages           PaperQuestionUsage[]
+  auditLogs        AuditLog[]
+
+  @@index([createdByUserId])
   @@map("institutions")
 }
 
 model InstitutionMember {
-  id String @id @default(uuid()) @db.Uuid
-  institutionId String @map("institution_id") @db.Uuid
-  userId String @map("user_id") @db.Uuid
-  role MemberRole
-  status MemberStatus @default(ACTIVE)
-  joinedAt DateTime @default(now()) @map("joined_at")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
-  institution Institution @relation(fields: [institutionId], references: [id])
-  user User @relation(fields: [userId], references: [id])
+  id            String       @id @default(uuid()) @db.Uuid
+  institutionId String       @map("institution_id") @db.Uuid
+  userId        String       @map("user_id") @db.Uuid
+  role          MemberRole
+  status        MemberStatus @default(ACTIVE)
+  joinedAt      DateTime     @default(now()) @map("joined_at")
+  createdAt     DateTime     @default(now()) @map("created_at")
+  updatedAt     DateTime     @updatedAt @map("updated_at")
+  deletedAt     DateTime?    @map("deleted_at")
+  institution   Institution  @relation(fields: [institutionId], references: [id])
+  user          User         @relation(fields: [userId], references: [id])
+
   @@unique([institutionId, userId])
   @@index([userId, status])
   @@map("institution_members")
 }
 
 model Board {
-  id String @id @default(uuid()) @db.Uuid
-  code String @unique
-  name String
-  slug String @unique
-  sortOrder Int @default(0) @map("sort_order")
+  id               String            @id @default(uuid()) @db.Uuid
+  code             String            @unique
+  name             String
+  slug             String            @unique
+  sortOrder        Int               @default(0) @map("sort_order")
   syllabusVersions SyllabusVersion[]
-  questions Question[]
-  blueprints PaperBlueprint[]
-  papers QuestionPaper[]
+  questions        Question[]
+  blueprints       PaperBlueprint[]
+  papers           QuestionPaper[]
+
   @@map("boards")
 }
 
 model SyllabusVersion {
-  id String @id @default(uuid()) @db.Uuid
-  boardId String @map("board_id") @db.Uuid
-  name String
-  code String
-  academicYear String @map("academic_year")
-  active Boolean @default(true)
-  board Board @relation(fields: [boardId], references: [id])
-  standards Standard[]
-  questions Question[]
-  blueprints PaperBlueprint[]
-  papers QuestionPaper[]
+  id           String           @id @default(uuid()) @db.Uuid
+  boardId      String           @map("board_id") @db.Uuid
+  name         String
+  code         String
+  academicYear String           @map("academic_year")
+  active       Boolean          @default(true)
+  board        Board            @relation(fields: [boardId], references: [id])
+  standards    Standard[]
+  questions    Question[]
+  blueprints   PaperBlueprint[]
+  papers       QuestionPaper[]
+
   @@unique([boardId, code])
   @@map("syllabus_versions")
 }
 
 model Medium {
-  id String @id @default(uuid()) @db.Uuid
-  code String @unique
-  name String
-  sortOrder Int @default(0) @map("sort_order")
-  subjects Subject[]
-  questions Question[]
+  id         String           @id @default(uuid()) @db.Uuid
+  code       String           @unique
+  name       String
+  sortOrder  Int              @default(0) @map("sort_order")
+  subjects   Subject[]
+  questions  Question[]
   blueprints PaperBlueprint[]
-  papers QuestionPaper[]
+  papers     QuestionPaper[]
+
   @@map("mediums")
 }
 
 model Standard {
-  id String @id @default(uuid()) @db.Uuid
-  syllabusVersionId String @map("syllabus_version_id") @db.Uuid
-  code String
-  name String
-  sortOrder Int @map("sort_order")
-  syllabusVersion SyllabusVersion @relation(fields: [syllabusVersionId], references: [id])
-  subjects Subject[]
-  questions Question[]
-  blueprints PaperBlueprint[]
-  papers QuestionPaper[]
+  id                String           @id @default(uuid()) @db.Uuid
+  syllabusVersionId String           @map("syllabus_version_id") @db.Uuid
+  code              String
+  name              String
+  sortOrder         Int              @map("sort_order")
+  syllabusVersion   SyllabusVersion  @relation(fields: [syllabusVersionId], references: [id])
+  subjects          Subject[]
+  questions         Question[]
+  blueprints        PaperBlueprint[]
+  papers            QuestionPaper[]
+
   @@unique([syllabusVersionId, code])
   @@map("standards")
 }
 
 model Subject {
-  id String @id @default(uuid()) @db.Uuid
-  standardId String @map("standard_id") @db.Uuid
-  mediumId String @map("medium_id") @db.Uuid
-  code String
-  name String
-  slug String
-  sortOrder Int @default(0) @map("sort_order")
-  standard Standard @relation(fields: [standardId], references: [id])
-  medium Medium @relation(fields: [mediumId], references: [id])
-  chapters Chapter[]
-  questions Question[]
+  id         String           @id @default(uuid()) @db.Uuid
+  standardId String           @map("standard_id") @db.Uuid
+  mediumId   String           @map("medium_id") @db.Uuid
+  code       String
+  name       String
+  slug       String
+  sortOrder  Int              @default(0) @map("sort_order")
+  standard   Standard         @relation(fields: [standardId], references: [id])
+  medium     Medium           @relation(fields: [mediumId], references: [id])
+  chapters   Chapter[]
+  questions  Question[]
   blueprints PaperBlueprint[]
-  papers QuestionPaper[]
+  papers     QuestionPaper[]
+
   @@unique([standardId, mediumId, code])
+  @@index([mediumId])
   @@map("subjects")
 }
 
 model Chapter {
-  id String @id @default(uuid()) @db.Uuid
-  subjectId String @map("subject_id") @db.Uuid
-  code String
-  name String
-  slug String
-  sortOrder Int @map("sort_order")
-  subject Subject @relation(fields: [subjectId], references: [id])
-  topics Topic[]
+  id        String     @id @default(uuid()) @db.Uuid
+  subjectId String     @map("subject_id") @db.Uuid
+  code      String
+  name      String
+  slug      String
+  sortOrder Int        @map("sort_order")
+  subject   Subject    @relation(fields: [subjectId], references: [id])
+  topics    Topic[]
   questions Question[]
+
   @@unique([subjectId, code])
   @@map("chapters")
 }
 
 model Topic {
-  id String @id @default(uuid()) @db.Uuid
-  chapterId String @map("chapter_id") @db.Uuid
-  name String
-  slug String
-  sortOrder Int @default(0) @map("sort_order")
-  chapter Chapter @relation(fields: [chapterId], references: [id])
+  id        String     @id @default(uuid()) @db.Uuid
+  chapterId String     @map("chapter_id") @db.Uuid
+  name      String
+  slug      String
+  sortOrder Int        @default(0) @map("sort_order")
+  chapter   Chapter    @relation(fields: [chapterId], references: [id])
   questions Question[]
+
   @@unique([chapterId, slug])
   @@map("topics")
 }
 
 model Question {
-  id String @id @default(uuid()) @db.Uuid
-  institutionId String? @map("institution_id") @db.Uuid
-  ownershipScope OwnershipScope @map("ownership_scope")
-  boardId String @map("board_id") @db.Uuid
-  syllabusVersionId String @map("syllabus_version_id") @db.Uuid
-  mediumId String @map("medium_id") @db.Uuid
-  standardId String @map("standard_id") @db.Uuid
-  subjectId String @map("subject_id") @db.Uuid
-  chapterId String @map("chapter_id") @db.Uuid
-  topicId String? @map("topic_id") @db.Uuid
-  questionType QuestionType @map("question_type")
-  marks Int
-  difficulty Difficulty
-  bloomLevel BloomLevel @map("bloom_level")
-  questionText String @map("question_text") @db.Text
-  questionTextFormat String @default("PLAIN_TEXT") @map("question_text_format")
-  correctAnswer Json @map("correct_answer")
-  alternativeAnswers Json? @map("alternative_answers")
-  solution String? @db.Text
-  explanation String? @db.Text
-  hint String? @db.Text
-  markingScheme Json? @map("marking_scheme")
-  options Json?
-  sourceType String @map("source_type")
-  sourceReference String? @map("source_reference")
-  isBookBack Boolean @default(false) @map("is_book_back")
-  isCreative Boolean @default(false) @map("is_creative")
-  isPreviousYear Boolean @default(false) @map("is_previous_year")
-  isPta Boolean @default(false) @map("is_pta")
-  isHots Boolean @default(false) @map("is_hots")
-  isCaseStudy Boolean @default(false) @map("is_case_study")
-  reviewStatus ReviewStatus @default(DRAFT) @map("review_status")
-  qualityScore Decimal? @map("quality_score") @db.Decimal(5,2)
-  createdByUserId String @map("created_by_user_id") @db.Uuid
-  reviewedByUserId String? @map("reviewed_by_user_id") @db.Uuid
-  reviewedAt DateTime? @map("reviewed_at")
-  usageCount Int @default(0) @map("usage_count")
-  lastUsedAt DateTime? @map("last_used_at")
-  version Int @default(1)
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
-  institution Institution? @relation(fields: [institutionId], references: [id])
-  board Board @relation(fields: [boardId], references: [id])
-  syllabusVersion SyllabusVersion @relation(fields: [syllabusVersionId], references: [id])
-  medium Medium @relation(fields: [mediumId], references: [id])
-  standard Standard @relation(fields: [standardId], references: [id])
-  subject Subject @relation(fields: [subjectId], references: [id])
-  chapter Chapter @relation(fields: [chapterId], references: [id])
-  topic Topic? @relation(fields: [topicId], references: [id])
-  creator User @relation("QuestionCreator", fields: [createdByUserId], references: [id])
-  reviewer User? @relation("QuestionReviewer", fields: [reviewedByUserId], references: [id])
-  versions QuestionVersion[]
-  reviews QuestionReview[]
-  usages PaperQuestionUsage[]
+  id                 String               @id @default(uuid()) @db.Uuid
+  institutionId      String?              @map("institution_id") @db.Uuid
+  ownershipScope     OwnershipScope       @map("ownership_scope")
+  boardId            String               @map("board_id") @db.Uuid
+  syllabusVersionId  String               @map("syllabus_version_id") @db.Uuid
+  mediumId           String               @map("medium_id") @db.Uuid
+  standardId         String               @map("standard_id") @db.Uuid
+  subjectId          String               @map("subject_id") @db.Uuid
+  chapterId          String               @map("chapter_id") @db.Uuid
+  topicId            String?              @map("topic_id") @db.Uuid
+  questionType       QuestionType         @map("question_type")
+  marks              Int
+  difficulty         Difficulty
+  bloomLevel         BloomLevel           @map("bloom_level")
+  questionText       String               @map("question_text") @db.Text
+  questionTextFormat String               @default("PLAIN_TEXT") @map("question_text_format")
+  correctAnswer      Json                 @map("correct_answer")
+  alternativeAnswers Json?                @map("alternative_answers")
+  solution           String?              @db.Text
+  explanation        String?              @db.Text
+  hint               String?              @db.Text
+  markingScheme      Json?                @map("marking_scheme")
+  options            Json?
+  sourceType         String               @map("source_type")
+  sourceReference    String?              @map("source_reference")
+  isBookBack         Boolean              @default(false) @map("is_book_back")
+  isCreative         Boolean              @default(false) @map("is_creative")
+  isPreviousYear     Boolean              @default(false) @map("is_previous_year")
+  isPta              Boolean              @default(false) @map("is_pta")
+  isHots             Boolean              @default(false) @map("is_hots")
+  isCaseStudy        Boolean              @default(false) @map("is_case_study")
+  reviewStatus       ReviewStatus         @default(DRAFT) @map("review_status")
+  qualityScore       Decimal?             @map("quality_score") @db.Decimal(5, 2)
+  createdByUserId    String               @map("created_by_user_id") @db.Uuid
+  reviewedByUserId   String?              @map("reviewed_by_user_id") @db.Uuid
+  reviewedAt         DateTime?            @map("reviewed_at")
+  usageCount         Int                  @default(0) @map("usage_count")
+  lastUsedAt         DateTime?            @map("last_used_at")
+  version            Int                  @default(1)
+  createdAt          DateTime             @default(now()) @map("created_at")
+  updatedAt          DateTime             @updatedAt @map("updated_at")
+  deletedAt          DateTime?            @map("deleted_at")
+  institution        Institution?         @relation(fields: [institutionId], references: [id])
+  board              Board                @relation(fields: [boardId], references: [id])
+  syllabusVersion    SyllabusVersion      @relation(fields: [syllabusVersionId], references: [id])
+  medium             Medium               @relation(fields: [mediumId], references: [id])
+  standard           Standard             @relation(fields: [standardId], references: [id])
+  subject            Subject              @relation(fields: [subjectId], references: [id])
+  chapter            Chapter              @relation(fields: [chapterId], references: [id])
+  topic              Topic?               @relation(fields: [topicId], references: [id])
+  creator            User                 @relation("QuestionCreator", fields: [createdByUserId], references: [id])
+  reviewer           User?                @relation("QuestionReviewer", fields: [reviewedByUserId], references: [id])
+  versions           QuestionVersion[]
+  reviews            QuestionReview[]
+  usages             PaperQuestionUsage[]
+
   @@index([institutionId, subjectId, chapterId])
   @@index([reviewStatus, questionType, marks])
   @@index([usageCount, lastUsedAt])
+  @@index([boardId])
+  @@index([chapterId])
+  @@index([reviewedByUserId])
+  @@index([standardId])
+  @@index([subjectId])
+  @@index([syllabusVersionId])
+  @@index([topicId])
   @@map("questions")
 }
 
 model QuestionVersion {
-  id String @id @default(uuid()) @db.Uuid
-  questionId String @map("question_id") @db.Uuid
-  versionNumber Int @map("version_number")
-  snapshot Json
-  changedByUserId String @map("changed_by_user_id") @db.Uuid
-  changeReason String? @map("change_reason")
-  createdAt DateTime @default(now()) @map("created_at")
-  question Question @relation(fields: [questionId], references: [id])
-  changedBy User @relation(fields: [changedByUserId], references: [id])
+  id              String   @id @default(uuid()) @db.Uuid
+  questionId      String   @map("question_id") @db.Uuid
+  versionNumber   Int      @map("version_number")
+  snapshot        Json
+  changedByUserId String   @map("changed_by_user_id") @db.Uuid
+  changeReason    String?  @map("change_reason")
+  createdAt       DateTime @default(now()) @map("created_at")
+  question        Question @relation(fields: [questionId], references: [id])
+  changedBy       User     @relation(fields: [changedByUserId], references: [id])
+
   @@unique([questionId, versionNumber])
+  @@index([changedByUserId])
   @@map("question_versions")
 }
 
 model QuestionReview {
-  id String @id @default(uuid()) @db.Uuid
-  questionId String @map("question_id") @db.Uuid
-  reviewerUserId String @map("reviewer_user_id") @db.Uuid
-  decision ReviewDecision
-  comments String?
-  previousStatus ReviewStatus @map("previous_status")
-  newStatus ReviewStatus @map("new_status")
-  createdAt DateTime @default(now()) @map("created_at")
-  question Question @relation(fields: [questionId], references: [id])
-  reviewer User @relation(fields: [reviewerUserId], references: [id])
+  id             String         @id @default(uuid()) @db.Uuid
+  questionId     String         @map("question_id") @db.Uuid
+  reviewerUserId String         @map("reviewer_user_id") @db.Uuid
+  decision       ReviewDecision
+  comments       String?
+  previousStatus ReviewStatus   @map("previous_status")
+  newStatus      ReviewStatus   @map("new_status")
+  createdAt      DateTime       @default(now()) @map("created_at")
+  question       Question       @relation(fields: [questionId], references: [id])
+  reviewer       User           @relation(fields: [reviewerUserId], references: [id])
+
+  @@index([questionId])
+  @@index([reviewerUserId])
   @@map("question_reviews")
 }
 
 model PaperBlueprint {
-  id String @id @default(uuid()) @db.Uuid
-  institutionId String @map("institution_id") @db.Uuid
-  name String
-  description String?
-  boardId String @map("board_id") @db.Uuid
-  syllabusVersionId String @map("syllabus_version_id") @db.Uuid
-  mediumId String @map("medium_id") @db.Uuid
-  standardId String @map("standard_id") @db.Uuid
-  subjectId String @map("subject_id") @db.Uuid
-  totalMarks Int @map("total_marks")
-  durationMinutes Int @map("duration_minutes")
-  instructions String[]
-  status BlueprintStatus @default(DRAFT)
-  createdByUserId String @map("created_by_user_id") @db.Uuid
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
-  institution Institution @relation(fields: [institutionId], references: [id])
-  board Board @relation(fields: [boardId], references: [id])
-  syllabusVersion SyllabusVersion @relation(fields: [syllabusVersionId], references: [id])
-  medium Medium @relation(fields: [mediumId], references: [id])
-  standard Standard @relation(fields: [standardId], references: [id])
-  subject Subject @relation(fields: [subjectId], references: [id])
-  creator User @relation(fields: [createdByUserId], references: [id])
-  sections BlueprintSection[]
-  papers QuestionPaper[]
+  id                String             @id @default(uuid()) @db.Uuid
+  institutionId     String             @map("institution_id") @db.Uuid
+  name              String
+  description       String?
+  boardId           String             @map("board_id") @db.Uuid
+  syllabusVersionId String             @map("syllabus_version_id") @db.Uuid
+  mediumId          String             @map("medium_id") @db.Uuid
+  standardId        String             @map("standard_id") @db.Uuid
+  subjectId         String             @map("subject_id") @db.Uuid
+  totalMarks        Int                @map("total_marks")
+  durationMinutes   Int                @map("duration_minutes")
+  instructions      String[]
+  status            BlueprintStatus    @default(DRAFT)
+  createdByUserId   String             @map("created_by_user_id") @db.Uuid
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+  deletedAt         DateTime?          @map("deleted_at")
+  institution       Institution        @relation(fields: [institutionId], references: [id])
+  board             Board              @relation(fields: [boardId], references: [id])
+  syllabusVersion   SyllabusVersion    @relation(fields: [syllabusVersionId], references: [id])
+  medium            Medium             @relation(fields: [mediumId], references: [id])
+  standard          Standard           @relation(fields: [standardId], references: [id])
+  subject           Subject            @relation(fields: [subjectId], references: [id])
+  creator           User               @relation(fields: [createdByUserId], references: [id])
+  sections          BlueprintSection[]
+  papers            QuestionPaper[]
+
   @@index([institutionId, subjectId])
   @@map("paper_blueprints")
 }
 
 model BlueprintSection {
-  id String @id @default(uuid()) @db.Uuid
-  blueprintId String @map("blueprint_id") @db.Uuid
-  name String
-  description String?
-  displayOrder Int @map("display_order")
-  questionType QuestionType @map("question_type")
-  marksPerQuestion Int @map("marks_per_question")
-  questionCount Int @map("question_count")
-  internalChoiceCount Int @default(0) @map("internal_choice_count")
-  isCompulsory Boolean @default(true) @map("is_compulsory")
-  chapterDistribution Json? @map("chapter_distribution")
-  difficultyDistribution Json? @map("difficulty_distribution")
-  bloomDistribution Json? @map("bloom_distribution")
-  sourceConstraints Json? @map("source_constraints")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  blueprint PaperBlueprint @relation(fields: [blueprintId], references: [id], onDelete: Cascade)
+  id                     String         @id @default(uuid()) @db.Uuid
+  blueprintId            String         @map("blueprint_id") @db.Uuid
+  name                   String
+  description            String?
+  displayOrder           Int            @map("display_order")
+  questionType           QuestionType   @map("question_type")
+  marksPerQuestion       Int            @map("marks_per_question")
+  questionCount          Int            @map("question_count")
+  internalChoiceCount    Int            @default(0) @map("internal_choice_count")
+  isCompulsory           Boolean        @default(true) @map("is_compulsory")
+  chapterDistribution    Json?          @map("chapter_distribution")
+  difficultyDistribution Json?          @map("difficulty_distribution")
+  bloomDistribution      Json?          @map("bloom_distribution")
+  sourceConstraints      Json?          @map("source_constraints")
+  createdAt              DateTime       @default(now()) @map("created_at")
+  updatedAt              DateTime       @updatedAt @map("updated_at")
+  blueprint              PaperBlueprint @relation(fields: [blueprintId], references: [id], onDelete: Cascade)
+
+  @@index([blueprintId])
   @@map("blueprint_sections")
 }
 
 model QuestionPaper {
-  id String @id @default(uuid()) @db.Uuid
-  institutionId String @map("institution_id") @db.Uuid
-  blueprintId String? @map("blueprint_id") @db.Uuid
-  title String
-  examName String? @map("exam_name")
-  boardId String @map("board_id") @db.Uuid
-  syllabusVersionId String @map("syllabus_version_id") @db.Uuid
-  mediumId String @map("medium_id") @db.Uuid
-  standardId String @map("standard_id") @db.Uuid
-  subjectId String @map("subject_id") @db.Uuid
-  totalMarks Int @map("total_marks")
-  durationMinutes Int @map("duration_minutes")
-  instructions String[]
-  status PaperStatus @default(GENERATED)
-  generationMode GenerationMode @map("generation_mode")
-  algorithmVersion String @map("algorithm_version")
-  generationSeed String @map("generation_seed")
-  generationWarnings Json @map("generation_warnings")
-  selectionDecisions Json @map("selection_decisions")
-  createdByUserId String @map("created_by_user_id") @db.Uuid
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
-  institution Institution @relation(fields: [institutionId], references: [id])
-  blueprint PaperBlueprint? @relation(fields: [blueprintId], references: [id])
-  board Board @relation(fields: [boardId], references: [id])
-  syllabusVersion SyllabusVersion @relation(fields: [syllabusVersionId], references: [id])
-  medium Medium @relation(fields: [mediumId], references: [id])
-  standard Standard @relation(fields: [standardId], references: [id])
-  subject Subject @relation(fields: [subjectId], references: [id])
-  creator User @relation(fields: [createdByUserId], references: [id])
-  snapshots PaperSnapshot[]
-  usages PaperQuestionUsage[]
+  id                 String               @id @default(uuid()) @db.Uuid
+  institutionId      String               @map("institution_id") @db.Uuid
+  blueprintId        String?              @map("blueprint_id") @db.Uuid
+  title              String
+  examName           String?              @map("exam_name")
+  boardId            String               @map("board_id") @db.Uuid
+  syllabusVersionId  String               @map("syllabus_version_id") @db.Uuid
+  mediumId           String               @map("medium_id") @db.Uuid
+  standardId         String               @map("standard_id") @db.Uuid
+  subjectId          String               @map("subject_id") @db.Uuid
+  totalMarks         Int                  @map("total_marks")
+  durationMinutes    Int                  @map("duration_minutes")
+  instructions       String[]
+  status             PaperStatus          @default(GENERATED)
+  generationMode     GenerationMode       @map("generation_mode")
+  algorithmVersion   String               @map("algorithm_version")
+  generationSeed     String               @map("generation_seed")
+  generationWarnings Json                 @map("generation_warnings")
+  selectionDecisions Json                 @map("selection_decisions")
+  createdByUserId    String               @map("created_by_user_id") @db.Uuid
+  createdAt          DateTime             @default(now()) @map("created_at")
+  updatedAt          DateTime             @updatedAt @map("updated_at")
+  deletedAt          DateTime?            @map("deleted_at")
+  institution        Institution          @relation(fields: [institutionId], references: [id])
+  blueprint          PaperBlueprint?      @relation(fields: [blueprintId], references: [id])
+  board              Board                @relation(fields: [boardId], references: [id])
+  syllabusVersion    SyllabusVersion      @relation(fields: [syllabusVersionId], references: [id])
+  medium             Medium               @relation(fields: [mediumId], references: [id])
+  standard           Standard             @relation(fields: [standardId], references: [id])
+  subject            Subject              @relation(fields: [subjectId], references: [id])
+  creator            User                 @relation(fields: [createdByUserId], references: [id])
+  snapshots          PaperSnapshot[]
+  usages             PaperQuestionUsage[]
+
   @@index([institutionId, createdAt])
   @@map("question_papers")
 }
 
 model PaperSnapshot {
-  id String @id @default(uuid()) @db.Uuid
-  questionPaperId String @map("question_paper_id") @db.Uuid
-  snapshotVersion Int @map("snapshot_version")
-  paperData Json @map("paper_data")
-  checksum String
-  createdByUserId String @map("created_by_user_id") @db.Uuid
-  createdAt DateTime @default(now()) @map("created_at")
-  paper QuestionPaper @relation(fields: [questionPaperId], references: [id])
-  creator User @relation(fields: [createdByUserId], references: [id])
+  id              String        @id @default(uuid()) @db.Uuid
+  questionPaperId String        @map("question_paper_id") @db.Uuid
+  snapshotVersion Int           @map("snapshot_version")
+  paperData       Json          @map("paper_data")
+  checksum        String
+  createdByUserId String        @map("created_by_user_id") @db.Uuid
+  createdAt       DateTime      @default(now()) @map("created_at")
+  paper           QuestionPaper @relation(fields: [questionPaperId], references: [id])
+  creator         User          @relation(fields: [createdByUserId], references: [id])
+
   @@unique([questionPaperId, snapshotVersion])
   @@map("paper_snapshots")
 }
 
 model PaperQuestionUsage {
-  id String @id @default(uuid()) @db.Uuid
-  questionPaperId String @map("question_paper_id") @db.Uuid
-  questionId String @map("question_id") @db.Uuid
-  institutionId String @map("institution_id") @db.Uuid
-  usedAt DateTime @default(now()) @map("used_at")
-  paper QuestionPaper @relation(fields: [questionPaperId], references: [id])
-  question Question @relation(fields: [questionId], references: [id])
-  institution Institution @relation(fields: [institutionId], references: [id])
+  id              String        @id @default(uuid()) @db.Uuid
+  questionPaperId String        @map("question_paper_id") @db.Uuid
+  questionId      String        @map("question_id") @db.Uuid
+  institutionId   String        @map("institution_id") @db.Uuid
+  usedAt          DateTime      @default(now()) @map("used_at")
+  paper           QuestionPaper @relation(fields: [questionPaperId], references: [id])
+  question        Question      @relation(fields: [questionId], references: [id])
+  institution     Institution   @relation(fields: [institutionId], references: [id])
+
   @@unique([questionPaperId, questionId])
   @@map("paper_question_usages")
 }
 
 model AuditLog {
-  id BigInt @id @default(autoincrement())
-  institutionId String? @map("institution_id") @db.Uuid
-  actorUserId String? @map("actor_user_id") @db.Uuid
-  action String
-  entityType String @map("entity_type")
-  entityId String @map("entity_id")
-  requestId String? @map("request_id")
-  ipAddress String? @map("ip_address")
-  userAgent String? @map("user_agent")
-  beforeData Json? @map("before_data")
-  afterData Json? @map("after_data")
-  metadata Json?
-  createdAt DateTime @default(now()) @map("created_at")
-  institution Institution? @relation(fields: [institutionId], references: [id])
-  actor User? @relation(fields: [actorUserId], references: [id])
+  id            BigInt       @id @default(autoincrement())
+  institutionId String?      @map("institution_id") @db.Uuid
+  actorUserId   String?      @map("actor_user_id") @db.Uuid
+  action        String
+  entityType    String       @map("entity_type")
+  entityId      String       @map("entity_id")
+  requestId     String?      @map("request_id")
+  ipAddress     String?      @map("ip_address")
+  userAgent     String?      @map("user_agent")
+  beforeData    Json?        @map("before_data")
+  afterData     Json?        @map("after_data")
+  metadata      Json?
+  createdAt     DateTime     @default(now()) @map("created_at")
+  institution   Institution? @relation(fields: [institutionId], references: [id])
+  actor         User?        @relation(fields: [actorUserId], references: [id])
+
   @@index([institutionId, createdAt])
+  @@index([actorUserId])
   @@map("audit_logs")
 }

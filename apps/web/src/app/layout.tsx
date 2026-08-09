@@ -1,13 +1,6 @@
 import type { ReactNode, ReactElement } from "react";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"),
@@ -61,7 +54,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: ReactNode }>): ReactElement {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en">
       <body>
         <a href="#main-content" className="skip-link">
           Skip to main content

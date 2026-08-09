@@ -33,7 +33,19 @@ VIP Maths is a commercial multi-tenant educational question-bank and paper-gener
 
 ---
 
-## 3. Workflows (`.agents/workflows/`)
+## 3. External Vendor Skills (`.agents/skills/`)
+
+- **`vercel-react-best-practices`**: React 19 and Next.js 16 performance, waterfall elimination, bundle size optimization, and RSC rendering patterns from Vercel Engineering.
+- **`supabase`**: Current Supabase platform behaviors covering Auth, `@supabase/ssr`, RLS policies, Storage, CLI tools, and MCP server configuration.
+- **`supabase-postgres-best-practices`**: PostgreSQL query optimization, indexing strategy, EXPLAIN analysis, connection pooling, and lock diagnosis.
+- **`playwright-cli`**: Browser QA automation, responsive rendering verification, visual debugging, and end-to-end flow reproduction via Playwright CLI.
+
+> [!IMPORTANT]
+> **VIP Maths Project Rules & Skills Remain Authoritative**: External vendor guidance supplements performance and platform knowledge but NEVER overrides VIP Maths tenant isolation, database migration safety, role permissions, or monorepo boundaries. See [EXTERNAL_AGENT_SKILLS.md](file:///d:/Projects/VIP_QN_BANK/docs/EXTERNAL_AGENT_SKILLS.md) for detailed priority matrices.
+
+---
+
+## 4. Workflows (`.agents/workflows/`)
 
 - **`/feature-delivery`**: 14-step workflow for end-to-end scoped feature delivery.
 - **`/database-change`**: 13-step additive and safe schema migration workflow.
@@ -42,7 +54,7 @@ VIP Maths is a commercial multi-tenant educational question-bank and paper-gener
 
 ---
 
-## 4. Operational Best Practices
+## 5. Operational Best Practices
 
 ### Planning Mode & Artifact Review
 Non-trivial architectural changes, database modifications, or major feature additions MUST use **Planning Mode** to produce an `implementation_plan.md` artifact for user review before execution.

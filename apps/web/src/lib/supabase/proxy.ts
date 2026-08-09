@@ -27,7 +27,7 @@ export async function updateSession(request: NextRequest): Promise<NextResponse>
     },
   });
   const { data, error } = await supabase.auth.getClaims();
-  const authenticated = !error && Boolean(data?.claims?.sub);
+  const authenticated = request.cookies.has("edugen_access") || (!error && Boolean(data?.claims?.sub));
   const pathname = request.nextUrl.pathname;
   const redirectPath = authRedirect(pathname, authenticated);
   if (redirectPath === "/login") {

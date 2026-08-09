@@ -11,6 +11,8 @@ import { Select } from "../../../components/ui/Select";
 import { Textarea } from "../../../components/ui/Textarea";
 import { Alert } from "../../../components/ui/Alert";
 import { api } from "../../../lib/api";
+import { questionCreateSchema } from "@edugen/shared";
+import { ZodError } from "zod";
 
 interface Item {
   readonly id: string;
@@ -90,35 +92,43 @@ export default function NewQuestionPage(): ReactElement {
     const mcq = type.startsWith("MCQ");
 
     try {
+      const payload = {
+        ...selection,
+        ownershipScope: data.get("ownershipScope"),
+        questionType: type,
+        marks: Number(data.get("marks")),
+        difficulty: data.get("difficulty"),
+        bloomLevel: data.get("bloomLevel"),
+        questionText: data.get("questionText"),
+        correctAnswer: data.get("correctAnswer"),
+        ...(mcq
+          ? {
+              options: ["A", "B", "C", "D"].map((id) => ({
+                id,
+                text: String(data.get(`option${id}`)),
+              })),
+            }
+          : {}),
+        solution: data.get("solution") || undefined,
+        sourceType: data.get("sourceType"),
+        isBookBack: data.get("sourceType") === "BOOK_BACK",
+        isCreative: data.get("sourceType") === "CREATIVE",
+        isPreviousYear: data.get("sourceType") === "PREVIOUS_YEAR_STYLE",
+      };
+
+      const validatedPayload = questionCreateSchema.parse(payload);
+
       await api("/questions", {
         method: "POST",
-        body: JSON.stringify({
-          ...selection,
-          ownershipScope: data.get("ownershipScope"),
-          questionType: type,
-          marks: Number(data.get("marks")),
-          difficulty: data.get("difficulty"),
-          bloomLevel: data.get("bloomLevel"),
-          questionText: data.get("questionText"),
-          correctAnswer: data.get("correctAnswer"),
-          ...(mcq
-            ? {
-                options: ["A", "B", "C", "D"].map((id) => ({
-                  id,
-                  text: String(data.get(`option${id}`)),
-                })),
-              }
-            : {}),
-          solution: data.get("solution") || undefined,
-          sourceType: data.get("sourceType"),
-          isBookBack: data.get("sourceType") === "BOOK_BACK",
-          isCreative: data.get("sourceType") === "CREATIVE",
-          isPreviousYear: data.get("sourceType") === "PREVIOUS_YEAR_STYLE",
-        }),
+        body: JSON.stringify(validatedPayload),
       });
       router.push("/questions");
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Unable to create question");
+      if (cause instanceof ZodError) {
+        setError("Validation failed: " + cause.errors.map(e => e.message).join(", "));
+      } else {
+        setError(cause instanceof Error ? cause.message : "Unable to create question");
+      }
     } finally {
       setLoading(false);
     }

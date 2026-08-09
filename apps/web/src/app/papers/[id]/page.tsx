@@ -89,7 +89,7 @@ export default function PaperPage({
         }
       />
 
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }} className="no-print">
+      <div className="paper-controls no-print">
         <div className="tabs-bar" style={{ margin: 0 }}>
           {(["QUESTION_PAPER", "ANSWER_KEY", "QUESTIONS_WITH_ANSWERS"] as const).map((item) => (
             <Button
@@ -103,8 +103,8 @@ export default function PaperPage({
           ))}
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <span style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--text-muted)" }}>Paper Set:</span>
+        <div className="paper-set-controls">
+          <span className="paper-set-label">Paper Set:</span>
           {(["A", "B", "C"] as const).map((s) => (
             <Button
               key={s}
@@ -127,7 +127,7 @@ export default function PaperPage({
           <div className="paper-heading">
             <h2>
               {paper.snapshot.paperData.metadata.title}{" "}
-              <span style={{ fontSize: "1rem", color: "var(--brand-primary)" }}>
+              <span className="paper-set-badge">
                 ({paper.snapshot.setLabel ?? `Set ${paperSet}`})
               </span>
             </h2>
@@ -169,7 +169,7 @@ export default function PaperPage({
                         ? question.correctAnswer
                         : JSON.stringify(question.correctAnswer)}
                       {question.solution && (
-                        <p style={{ marginTop: "4px" }}>
+                        <p className="paper-solution">
                           <strong>Solution:</strong> {question.solution}
                         </p>
                       )}

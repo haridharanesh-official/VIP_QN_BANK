@@ -3,55 +3,56 @@
    ========================================================================== */
 
 :root {
-  /* --- Brand Color Palette (Derived from official logo) --- */
-  --brand-primary: #046d35;         /* Deep Forest Green (Figure & Swoosh) */
-  --brand-primary-hover: #035429;
-  --brand-primary-active: #023c1d;
-  --brand-primary-light: #e6f4ed;
-  --brand-primary-border: #a3d9b8;
+  /* --- Brand Color Palette (Main Branch Theme) --- */
+  --brand-primary: #087a6b;         /* Green */
+  --brand-primary-hover: #065c51;
+  --brand-primary-active: #04463d;
+  --brand-primary-light: #e0f2f0;
+  --brand-primary-border: #b3dfd9;
 
-  --brand-orange: #fd8b07;          /* Warm Orange (Backpack & Straps) */
+  --brand-orange: #fd8b07;          /* Warm Orange (Keep for accents) */
   --brand-orange-hover: #e07800;
   --brand-orange-light: #fff4e5;
   --brand-orange-border: #ffd5a3;
 
-  --brand-magenta: #a50c49;         /* Wine Magenta (Slogan "Inspiration is not a word") */
+  --brand-magenta: #a50c49;         /* Wine Magenta (Keep for accents) */
   --brand-magenta-hover: #86093b;
   --brand-magenta-light: #fdf0f4;
   --brand-magenta-border: #f5b7ce;
 
   /* --- Neutral Surface Colors --- */
-  --surface-page: #f8fafc;
+  --surface-page: #f5f7fa;
   --surface-card: #ffffff;
   --surface-subtle: #f1f5f9;
-  --surface-hover: #f8fafc;
-  --surface-sidebar: #062615;       /* Rich Deep Green-Navy for App Shell */
-  --surface-sidebar-hover: #0a3a21;
-  --surface-sidebar-active: #0e4c2c;
-  --surface-overlay: rgba(15, 23, 42, 0.5);
+  --surface-hover: #f5f7fa;
+  --surface-sidebar: #0d1c2e;       /* Navy */
+  --surface-sidebar-hover: #16304a;
+  --surface-sidebar-active: #1e4266;
+  --surface-overlay: rgba(13, 28, 46, 0.5);
 
   /* --- Typography & Text Colors --- */
-  --text-primary: #0f172a;
+  --text-primary: #172033;
   --text-secondary: #475569;
-  --text-muted: #64748b;
+  --text-muted: #667085;
   --text-inverse: #ffffff;
-  --text-sidebar: #d1fae5;
-  --text-sidebar-muted: #a7f3d0;
+  --text-sidebar: #ffffff;
+  --text-sidebar-muted: #b9c6d6;
 
   /* --- Border & Divider Colors --- */
-  --border-default: #e2e8f0;
+  --border-default: #dde4ec;
   --border-strong: #cbd5e1;
-  --border-focus: #046d35;
+  --border-focus: #087a6b;
 
   /* --- Status Colors --- */
-  --status-success: #046d35;
-  --status-success-bg: #e6f4ed;
+  --status-success: #087a6b;
+  --status-success-bg: #e0f2f0;
   --status-warning: #b45309;
   --status-warning-bg: #fef3c7;
   --status-danger: #dc2626;
   --status-danger-bg: #fef2f2;
   --status-info: #1d4ed8;
   --status-info-bg: #eff6ff;
+
 
   /* --- Spacing Scale (4px base) --- */
   --space-1: 4px;
@@ -1133,4 +1134,287 @@ a:hover {
   width: 100%;
   justify-content: flex-start;
   padding: 8px 12px;
+}
+
+.review-queue-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.review-item-content {
+  margin-bottom: var(--space-4);
+}
+
+.review-question-text {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+
+.review-meta {
+  display: flex;
+  gap: var(--space-4);
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.review-actions-panel {
+  border-top: 1px solid var(--border-default);
+  padding-top: var(--space-4);
+}
+
+.review-action-buttons {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: flex-end;
+}
+
+.blueprint-sections-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.blueprint-section-card {
+  padding: 16px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background-color: var(--surface-subtle);
+}
+
+.blueprint-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.blueprint-section-title {
+  font-size: 1rem;
+  color: var(--brand-primary);
+}
+
+.blueprint-section-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.blueprint-total-marks {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--brand-primary);
+  display: block;
+  line-height: 1;
+}
+
+.blueprint-total-marks-label {
+  color: var(--text-muted);
+}
+
+.blueprint-chapter-selection {
+  margin-top: 20px;
+}
+
+.blueprint-chapter-label {
+  margin-bottom: 8px;
+  display: block;
+}
+
+.paper-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.paper-set-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.paper-set-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.paper-set-badge {
+  font-size: 1rem;
+  color: var(--brand-primary);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.paper-solution {
+  margin-top: 4px;
+}
+
+/* ==========================================================================
+   LANDING PAGE STYLES (qb365.in inspired)
+   ========================================================================== */
+
+.landing-main {
+  background: linear-gradient(135deg, #0d1c2e 0%, #16304a 100%);
+  color: #fff;
+  min-height: 100vh;
+  font-family: var(--font-inter), sans-serif;
+}
+
+.landing-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-4) var(--space-10);
+  background: rgba(13, 28, 46, 0.8);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.landing-nav-logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.landing-nav-links {
+  display: flex;
+  gap: var(--space-6);
+  align-items: center;
+}
+
+.landing-link {
+  color: var(--text-sidebar-muted);
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+
+.landing-link:hover {
+  color: #fff;
+}
+
+.hero-section {
+  padding: 100px var(--space-10) 80px;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.hero-title {
+  font-size: 4rem;
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: var(--space-6);
+  letter-spacing: -0.02em;
+}
+
+.text-highlight {
+  color: var(--brand-primary);
+  background: linear-gradient(to right, #087a6b, #10b981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--text-sidebar-muted);
+  margin-bottom: var(--space-10);
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-actions {
+  display: flex;
+  gap: var(--space-4);
+  justify-content: center;
+  margin-bottom: var(--space-8);
+}
+
+.btn-vibrant {
+  background: linear-gradient(to right, #087a6b, #065c51);
+  color: #fff;
+  border: none;
+  font-weight: 700;
+  padding: 14px 28px;
+  font-size: 1.125rem;
+  box-shadow: 0 10px 25px rgba(8, 122, 107, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-vibrant:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(8, 122, 107, 0.5);
+}
+
+.btn-glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 14px 28px;
+  font-size: 1.125rem;
+}
+
+.btn-glass:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.hero-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-10);
+}
+
+.hero-link {
+  color: var(--brand-accent-light);
+  font-weight: 600;
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-8);
+  color: #fff;
+  font-weight: 500;
+  font-size: 1.125rem;
+  opacity: 0.9;
+}
+
+.trusted-section {
+  background: #fff;
+  color: var(--text-primary);
+  padding: var(--space-10);
+  text-align: center;
+}
+
+.trusted-title {
+  color: var(--brand-primary);
+  font-size: 1.5rem;
+  margin-bottom: var(--space-8);
+}
+
+.trusted-grid {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-12);
+  flex-wrap: wrap;
+}
+
+.trusted-logo {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--text-muted);
 }

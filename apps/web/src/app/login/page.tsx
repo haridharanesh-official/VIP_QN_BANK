@@ -128,6 +128,47 @@ export default function LoginPage(): ReactElement {
               {loading ? "Signing in…" : "Sign in to workspace"}
             </Button>
 
+            {process.env.NODE_ENV === "development" && (
+              <div style={{ display: "flex", gap: "8px", marginTop: "16px" }}>
+                <Button 
+                  type="button" 
+                  variant="secondary" 
+                  size="sm" 
+                  style={{ flex: 1 }}
+                  onClick={() => {
+                    const form = document.querySelector('form') as HTMLFormElement;
+                    if (form) {
+                      const emailInput = form.querySelector('input[name="email"]') as HTMLInputElement;
+                      const pwdInput = form.querySelector('input[name="password"]') as HTMLInputElement;
+                      if (emailInput) emailInput.value = "owner@vip-maths.local";
+                      if (pwdInput) pwdInput.value = "VIPMathsDev2026!";
+                      form.requestSubmit();
+                    }
+                  }}
+                >
+                  Dev: Owner
+                </Button>
+                <Button 
+                  type="button" 
+                  variant="secondary" 
+                  size="sm" 
+                  style={{ flex: 1 }}
+                  onClick={() => {
+                    const form = document.querySelector('form') as HTMLFormElement;
+                    if (form) {
+                      const emailInput = form.querySelector('input[name="email"]') as HTMLInputElement;
+                      const pwdInput = form.querySelector('input[name="password"]') as HTMLInputElement;
+                      if (emailInput) emailInput.value = "reviewer@vip-maths.local";
+                      if (pwdInput) pwdInput.value = "VIPMathsDev2026!";
+                      form.requestSubmit();
+                    }
+                  }}
+                >
+                  Dev: Reviewer
+                </Button>
+              </div>
+            )}
+
             <p className="auth-footer-text">
               New to VIP Maths?{" "}
               <Link href="/register" style={{ fontWeight: 600 }}>

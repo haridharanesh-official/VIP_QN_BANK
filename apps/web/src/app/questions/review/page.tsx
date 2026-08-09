@@ -103,15 +103,15 @@ export default function QuestionReviewPage(): ReactElement {
           }
         />
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        <div className="review-queue-list">
           {data.items.map((question) => (
             <Card
               key={question.id}
               title={`Question #${question.id.slice(0, 8)}`}
               action={<Badge variant="pending">Pending Review</Badge>}
             >
-              <div style={{ marginBottom: "16px" }}>
-                <p style={{ fontSize: "1.125rem", fontWeight: 600, color: "var(--text-primary)", margin: "0 0 12px 0" }}>
+              <div className="review-item-content">
+                <p className="review-question-text">
                   {question.questionText}
                 </p>
 
@@ -130,7 +130,7 @@ export default function QuestionReviewPage(): ReactElement {
                   </div>
                 )}
 
-                <div style={{ display: "flex", gap: "16px", color: "var(--text-muted)", fontSize: "0.8125rem" }}>
+                <div className="review-meta">
                   <span>Type: <strong>{question.questionType.replaceAll("_", " ")}</strong></span>
                   <span>Marks: <strong>{question.marks}</strong></span>
                   <span>Difficulty: <strong>{question.difficulty}</strong></span>
@@ -138,7 +138,7 @@ export default function QuestionReviewPage(): ReactElement {
                 </div>
               </div>
 
-              <div style={{ borderTop: "1px solid var(--border-default)", paddingTop: "16px" }}>
+              <div className="review-actions-panel">
                 <Textarea
                   placeholder="Enter feedback or explanation for the author (required for Rejection / Changes Requested)…"
                   rows={2}
@@ -149,7 +149,7 @@ export default function QuestionReviewPage(): ReactElement {
                   style={{ marginBottom: "12px" }}
                 />
 
-                <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end" }}>
+                <div className="review-action-buttons">
                   <Button
                     variant="danger"
                     size="sm"

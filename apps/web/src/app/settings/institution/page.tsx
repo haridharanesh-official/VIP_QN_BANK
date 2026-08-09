@@ -30,7 +30,24 @@ export default function InstitutionBrandingPage(): ReactElement {
 
   useEffect(() => {
     void api<Institution>("/institutions/current")
-      .then(setInstitution)
+      .then((inst) => {
+        setInstitution(inst);
+        try {
+          const stored = localStorage.getItem("vip_institution_branding");
+          if (stored) {
+            const data = JSON.parse(stored);
+            setExamHeader(data.examHeader || "");
+            setAddress(data.address || "");
+            setPhone(data.phone || "");
+            setEmail(data.email || "");
+            setWatermarkText(data.watermarkText || "");
+          } else {
+            setExamHeader(inst.name);
+          }
+        } catch {
+          // ignore
+        }
+      })
       .catch((cause) =>
         setError(cause instanceof Error ? cause.message : "Unable to load institution details")
       );
