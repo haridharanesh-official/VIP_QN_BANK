@@ -7,7 +7,21 @@ import { QuestionsModule } from "./modules/questions/questions.module";
 import { BlueprintsModule } from "./modules/blueprints/blueprints.module";
 import { PapersModule } from "./modules/papers/papers.module";
 import { InstitutionsModule } from "./modules/institutions/institutions.module";
+import { ExportsModule } from "./modules/exports/exports.module";
 import { RuntimeServicesService } from "./runtime-services.service";
 
-@Module({ imports: [PrismaModule, AuthModule, InstitutionsModule, AcademicModule, QuestionsModule, BlueprintsModule, PapersModule], controllers: [HealthController], providers: [RuntimeServicesService] })
+@Module({
+  imports: [
+    PrismaModule,
+    AuthModule,
+    InstitutionsModule,
+    AcademicModule,
+    QuestionsModule,
+    BlueprintsModule,
+    PapersModule,
+    ExportsModule,
+  ],
+  controllers: [HealthController],
+  providers: [RuntimeServicesService],
+})
 export class AppModule {}

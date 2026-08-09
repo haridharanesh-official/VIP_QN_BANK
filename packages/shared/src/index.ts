@@ -61,5 +61,22 @@ export type BlueprintCreateInput = z.infer<typeof blueprintCreateSchema>;
 export type BlueprintUpdateInput = z.infer<typeof blueprintUpdateSchema>;
 export type BlueprintSectionInput = z.infer<typeof blueprintSectionSchema>;
 
+const id = z.string().uuid();
+export const memberCreateSchema = z.object({ email: z.string().email(), role: z.enum(["ADMIN", "HOD", "TEACHER", "CONTENT_REVIEWER"]) }).strict();
+export const boardCreateSchema = z.object({ code: z.string().min(2).max(30), name: z.string().min(2).max(160), slug: z.string().regex(/^[a-z0-9-]+$/), sortOrder: z.number().int().default(0) }).strict();
+export const syllabusVersionCreateSchema = z.object({ boardId: id, name: z.string().min(2), code: z.string().min(2), academicYear: z.string().min(4), active: z.boolean().default(true) }).strict();
+export const standardCreateSchema = z.object({ syllabusVersionId: id, code: z.string().min(1), name: z.string().min(2), sortOrder: z.number().int() }).strict();
+export const subjectCreateSchema = z.object({ standardId: id, mediumId: id, code: z.string().min(1), name: z.string().min(2), slug: z.string().regex(/^[a-z0-9-]+$/), sortOrder: z.number().int().default(0) }).strict();
+export const chapterCreateSchema = z.object({ subjectId: id, code: z.string().min(1), name: z.string().min(2), slug: z.string().regex(/^[a-z0-9-]+$/), sortOrder: z.number().int() }).strict();
+export const topicCreateSchema = z.object({ chapterId: id, name: z.string().min(2), slug: z.string().regex(/^[a-z0-9-]+$/), sortOrder: z.number().int().default(0) }).strict();
+
+export type MemberCreateInput = z.infer<typeof memberCreateSchema>;
+export type BoardCreateInput = z.infer<typeof boardCreateSchema>;
+export type SyllabusVersionCreateInput = z.infer<typeof syllabusVersionCreateSchema>;
+export type StandardCreateInput = z.infer<typeof standardCreateSchema>;
+export type SubjectCreateInput = z.infer<typeof subjectCreateSchema>;
+export type ChapterCreateInput = z.infer<typeof chapterCreateSchema>;
+export type TopicCreateInput = z.infer<typeof topicCreateSchema>;
+
 export interface ApiErrorBody { readonly error: { readonly code: string; readonly message: string; readonly details?: unknown; readonly requestId: string } }
 export interface PageResult<T> { readonly items: readonly T[]; readonly page: number; readonly pageSize: number; readonly total: number; readonly totalPages: number }
