@@ -9,6 +9,7 @@
     "test": "node --test --import tsx \"test/**/*.test.ts\"",
     "lint": "tsc --noEmit",
     "typecheck": "tsc --noEmit",
+    "import:maths12": "tsx src/tools/importers/maths12/cli.ts",
     "db:generate": "prisma generate",
     "db:migrate": "node --env-file=../../.env node_modules/prisma/build/index.js migrate deploy",
     "db:migrate:dev": "node --env-file=../../.env node_modules/prisma/build/index.js migrate dev",
@@ -27,7 +28,9 @@
     "argon2": "^0.44.0",
     "cookie-parser": "^1.4.7",
     "express": "^5.1.0",
+    "fast-xml-parser": "^4.5.0",
     "helmet": "^8.1.0",
+    "jszip": "^3.10.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.0",
     "zod": "^3.25.0"

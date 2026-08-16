@@ -2,6 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { supabaseConfig } from "./config";
 import { authRedirect } from "../auth-route-policy";
+import { developmentAuthBypassEnabled } from "../development-auth";
 
 function copySessionCookies(source: NextResponse, target: NextResponse): NextResponse {
   source.cookies.getAll().forEach((cookie) => target.cookies.set(cookie));
@@ -13,6 +14,17 @@ function copySessionCookies(source: NextResponse, target: NextResponse): NextRes
 }
 
 export async function updateSession(request: NextRequest): Promise<NextResponse> {
+  const pathname = request.nextUrl.pathname;
+  if (developmentAuthBypassEnabled()) {
+    const redirectPath = authRedirect(pathname, true);
+    if (redirectPath === "/dashboard") {
+      const destination = request.nextUrl.clone();
+      destination.pathname = "/dashboard";
+      destination.search = "";
+      return NextResponse.redirect(destination);
+    }
+    return NextResponse.next({ request });
+  }
   let response = NextResponse.next({ request });
   const { url, publishableKey } = supabaseConfig();
   const supabase = createServerClient(url, publishableKey, {
@@ -28,7 +40,6 @@ export async function updateSession(request: NextRequest): Promise<NextResponse>
   });
   const { data, error } = await supabase.auth.getClaims();
   const authenticated = !error && Boolean(data?.claims?.sub);
-  const pathname = request.nextUrl.pathname;
   const redirectPath = authRedirect(pathname, authenticated);
   if (redirectPath === "/login") {
     const destination = request.nextUrl.clone();

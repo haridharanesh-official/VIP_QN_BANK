@@ -5,7 +5,7 @@ import type { Request } from "express";
 import type { MemberRole } from "@prisma/client";
 import { PrismaService } from "../../prisma/prisma.service";
 import { AppError } from "../../common/app-error";
-import { readEnvironment } from "../../config/environment";
+import { isDevelopmentAuthBypassEnabled, readEnvironment } from "../../config/environment";
 import { ROLES_KEY } from "./auth.decorators";
 import type { TokenPayload } from "./auth.types";
 import { SupabaseJwtVerifier } from "./supabase-jwt-verifier";
@@ -46,9 +46,26 @@ export class SupabaseAuthGuard implements CanActivate {
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private readonly legacy: LegacyAuthGuard, private readonly supabase: SupabaseAuthGuard) {}
-  canActivate(context: ExecutionContext): boolean | Promise<boolean> {
+  constructor(private readonly legacy: LegacyAuthGuard, private readonly supabase: SupabaseAuthGuard, private readonly prisma: PrismaService) {}
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    if (isDevelopmentAuthBypassEnabled()) return this.resolveDevelopmentIdentity(context);
     return readEnvironment().AUTH_PROVIDER === "supabase" ? this.supabase.canActivate(context) : this.legacy.canActivate(context);
+  }
+  private async resolveDevelopmentIdentity(context: ExecutionContext): Promise<boolean> {
+    const environment = readEnvironment();
+    const membership = await this.prisma.institutionMember.findFirst({
+      where: {
+        status: "ACTIVE", deletedAt: null,
+        user: { email: environment.DEV_USER_EMAIL!, status: "ACTIVE", deletedAt: null },
+        institution: { slug: environment.DEV_INSTITUTION_SLUG!, status: "ACTIVE", deletedAt: null },
+      },
+      select: { institutionId: true, user: { select: { id: true, email: true, firstName: true, lastName: true } } },
+    });
+    if (!membership) throw new AppError("DEVELOPMENT_IDENTITY_UNAVAILABLE", "Configured development identity is not an active institution member.", HttpStatus.SERVICE_UNAVAILABLE);
+    const request = context.switchToHttp().getRequest<Request>();
+    request.authUser = membership.user;
+    request.developmentInstitutionId = membership.institutionId;
+    return true;
   }
 }
 
@@ -57,7 +74,7 @@ export class InstitutionGuard implements CanActivate {
   constructor(private readonly prisma: PrismaService) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
-    const institutionId = request.headers["x-institution-id"];
+    const institutionId = request.developmentInstitutionId ?? request.headers["x-institution-id"];
     if (typeof institutionId !== "string" || !request.authUser) throw new AppError("INSTITUTION_REQUIRED", "X-Institution-Id is required.", HttpStatus.BAD_REQUEST);
     const membership = await this.prisma.institutionMember.findFirst({ where: { institutionId, userId: request.authUser.id, status: "ACTIVE", deletedAt: null, institution: { status: "ACTIVE", deletedAt: null } }, select: { role: true } });
     if (!membership) throw new AppError("TENANT_ACCESS_DENIED", "You are not an active member of this institution.", HttpStatus.FORBIDDEN);

@@ -54,6 +54,7 @@ enum QuestionType {
   SHORT_ANSWER
   LONG_ANSWER
   ESSAY
+  DESCRIPTIVE
 }
 enum Difficulty {
   EASY
@@ -298,12 +299,12 @@ model Question {
   chapterId String @map("chapter_id") @db.Uuid
   topicId String? @map("topic_id") @db.Uuid
   questionType QuestionType @map("question_type")
-  marks Int
-  difficulty Difficulty
-  bloomLevel BloomLevel @map("bloom_level")
+  marks Int?
+  difficulty Difficulty?
+  bloomLevel BloomLevel? @map("bloom_level")
   questionText String @map("question_text") @db.Text
   questionTextFormat String @default("PLAIN_TEXT") @map("question_text_format")
-  correctAnswer Json @map("correct_answer")
+  correctAnswer Json? @map("correct_answer")
   alternativeAnswers Json? @map("alternative_answers")
   solution String? @db.Text
   explanation String? @db.Text
@@ -312,6 +313,8 @@ model Question {
   options Json?
   sourceType String @map("source_type")
   sourceReference String? @map("source_reference")
+  sourceDocument String? @map("source_document")
+  sourceOrder Int? @map("source_order")
   isBookBack Boolean @default(false) @map("is_book_back")
   isCreative Boolean @default(false) @map("is_creative")
   isPreviousYear Boolean @default(false) @map("is_previous_year")
@@ -342,6 +345,7 @@ model Question {
   versions QuestionVersion[]
   reviews QuestionReview[]
   usages PaperQuestionUsage[]
+  @@unique([chapterId, sourceOrder])
   @@index([institutionId, subjectId, chapterId])
   @@index([reviewStatus, questionType, marks])
   @@index([usageCount, lastUsedAt])

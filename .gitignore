@@ -38,3 +38,7 @@ Thumbs.db
 *.tsbuildinfo
 playwright-report/
 test-results/
+
+# Dataset imports (large source documents and generated audit artifacts)
+data/imports/
+artifacts/imports/

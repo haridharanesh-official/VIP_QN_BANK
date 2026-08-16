@@ -1,5 +1,10 @@
 import { z } from "zod";
 
+export interface DevelopmentAuthEnvironment { readonly NODE_ENV?: string; readonly DEV_AUTH_BYPASS?: string }
+export function developmentAuthBypassEnabled(environment: DevelopmentAuthEnvironment): boolean {
+  return environment.NODE_ENV === "development" && environment.DEV_AUTH_BYPASS === "true";
+}
+
 export const institutionTypes = ["SCHOOL", "TUITION_CENTRE", "INDIVIDUAL", "COLLEGE", "OTHER"] as const;
 export const memberRoles = ["OWNER", "ADMIN", "HOD", "TEACHER", "CONTENT_REVIEWER"] as const;
 export const questionTypes = ["MCQ_SINGLE", "MCQ_MULTIPLE", "TRUE_FALSE", "FILL_IN_BLANK", "ONE_WORD", "ASSERTION_REASON", "CASE_STUDY", "NUMERICAL", "VERY_SHORT_ANSWER", "SHORT_ANSWER", "LONG_ANSWER", "ESSAY"] as const;
