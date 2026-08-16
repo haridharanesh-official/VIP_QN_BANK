@@ -20,6 +20,7 @@ Thumbs.db
 # IDE files
 .vscode/
 .idea/
+.claude/
 
 # Local databases and caches
 *.db
@@ -30,3 +31,7 @@ Thumbs.db
 # Tool output
 playwright-report/
 test-results/
+
+# Dataset imports (large source documents and generated audit artifacts)
+data/imports/
+artifacts/imports/
